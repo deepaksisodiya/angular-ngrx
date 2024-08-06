@@ -7,14 +7,14 @@ import { provideEffects } from '@ngrx/effects'
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
-// import { CounterEffects } from './state/counter.effects';
+import { loadCounter2 } from './state/counter.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideStore(reducers),
-    provideEffects(),
+    provideEffects({loadCounter2}),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideHttpClient()
   ]

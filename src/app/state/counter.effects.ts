@@ -1,25 +1,26 @@
 // src/app/state/effects/counter.effects.ts
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MyApiService } from '../services/api.service';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, exhaustMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { loadCounter, loadCounterSuccess, loadCounterFailure } from './counter.actions';
 
-@Injectable()
-export class CounterEffects {
-  constructor(private actions$: Actions, private apiService: MyApiService) {}
-
-  loadCounter$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadCounter),
-      mergeMap(() =>
-        this.apiService.get<number>('counter').pipe(
-          map(counter => loadCounterSuccess({ counter })),
-          catchError(error => of(loadCounterFailure({ error })))
-        )
-      )
-    )
-  );
-}
+// mapping to a different action
+export const loadCounter2 = createEffect(
+    (actions$ = inject(Actions), usersService = inject(MyApiService)) => {
+        return actions$.pipe(
+        ofType(loadCounter),
+        exhaustMap(() => {
+            return usersService.get('counter').pipe(
+            map((counter: any) => {
+                console.log(counter);
+                return loadCounterSuccess({counter: counter})
+            }),
+            catchError(error => of(loadCounterFailure({ error })))
+            );
+        })
+        );
+    },
+    { functional: true }
+);

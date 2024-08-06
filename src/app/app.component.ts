@@ -25,14 +25,14 @@ export class AppComponent {
   ngOnInit() {
     this.store.dispatch(loadCounter());
 
-    this.apiService.get('counter').subscribe({
-      next: (response: any) => {
-        console.log('Backend response:', response);
-      },
-      error: (error) => {
-        console.error('Backend error:', error);
-      }
-    });
+    // this.apiService.get('counter').subscribe({
+    //   next: (response: any) => {
+    //     console.log('Backend response:', response);
+    //   },
+    //   error: (error) => {
+    //     console.error('Backend error:', error);
+    //   }
+    // });
   }
 
   increment() {

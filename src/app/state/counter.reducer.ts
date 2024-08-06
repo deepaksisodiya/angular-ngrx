@@ -8,7 +8,9 @@ const _counterReducer = createReducer(
   on(increment, state => state + 1),
   on(decrement, state => state - 1),
   on(reset, state => initialState),
-  on(loadCounterSuccess, (state) => state)
+  on(loadCounterSuccess, (state, { counter }) => {
+    return counter
+  })
 );
 
 export function counterReducer(state: number | undefined, action: Action) {
